@@ -7,10 +7,32 @@ class Screen {
         this.value = value;
     }
 
+    getValue() {
+        return inputScreen.value ;
+    }
+
+    setValue(value) {
+        inputScreen.value = value;
+    }
+
     showValue(btnValue) {
-        inputScreen.value = btnValue;
+
+        if (inputScreen.value.length > 18) 
+            return;   
+        
+        inputScreen.value += btnValue;
+        this.value += btnValue.toString();
+
+        // HOMEWORK
+        if (inputScreen.value.length > 16) {
+            inputScreen.style.fontSize = "28px"
+        } else {
+            inputScreen.style.fontSize = "32px"
+        }     
     }
 }
+
+const MAIN_SCREEN = new Screen();
 
 class Buttons {
     constructor(value, type, cssClass) {
@@ -20,9 +42,26 @@ class Buttons {
     }
 
     click() {
-        console.info(this.value + " " + this.type);
-        new Screen(this.value).showValue(this.value);
-        return this.value;
+        
+
+        if (this.type === "digit")
+            MAIN_SCREEN.showValue(this.value);
+
+        if (this.type === "operator") {
+            new CalcBrain().pendingOperands(
+                MAIN_SCREEN.getValue(),
+                null,
+                this.value
+                );
+
+            MAIN_SCREEN.setValue(0);
+
+            let firstLocalOperand = MAIN_SCREEN.getValue();
+            // new CalcBrain(firstLocalOperand,)
+
+        } 
+
+       
     }
 
     drawButton() {
@@ -30,9 +69,51 @@ class Buttons {
         elem.className = this.cssClass;
         elem.innerHTML = this.value;
         // arrow functions SHO TAKE?
-        elem.onclick = () => this.click();
+        elem.onclick = this.click.bind(this);
         return elem;
      }
+}
+
+class CalcBrain {
+    constructor(firstOperand = null, secondOperand = null, operator = null, step = false, result) {
+        this.firstOperand = firstOperand;
+        this.secondOperand = secondOperand;
+        this.operator = operator;
+        this.step = step;
+        this.result = result;
+    }
+
+    pendingOperands(f, s, o) {
+
+        if (!this.firstOperand && !this.step) {
+            this.firstOperand = f;
+            this.operator = o;
+            this.step = true;
+            return;
+        }
+
+        if (!this.secondOperand && this.step) {
+            this.secondOperand = s;
+            this.step = false;
+
+            this.makeCalc(
+                this.firstOperand,
+                this.secondOperand,
+                this.operator
+                )
+
+            this.firstOperand = null
+            this.secondOperand = null;
+            this.operator = null;
+        }   
+
+    }
+        }
+
+
+        
+        return this.result;
+    }
 }
 
 class RenderButtons {
@@ -50,9 +131,64 @@ const arrayOfButton = [
     new Buttons(3, "digit", "btn"),
     new Buttons(4, "digit", "btn"),
     new Buttons(5, "digit", "btn"),
-    new Buttons(6, "digit", "btn")
+    new Buttons(6, "digit", "btn"),
+    new Buttons("+", "operator", "btn"),
+    new Buttons("-", "operator", "btn"),
+    new Buttons("*", "operator", "btn"),
+    new Buttons("/", "operator", "btn")
 ]
 
 var runCalc = new RenderButtons();
 
 runCalc.renderDefaultUI(arrayOfButton);
+
+// class
+// constructor
+// Math.floor
+// Math.random
+// value
+// innerHTML
+// createElement div input 
+
+// document.getElementById('game').apeendCHild()
+
+
+
+
+// class Computer AI
+
+// class UserUI
+
+// class GAME_BRAIN
+
+// class renderUI
+
+
+
+
+length // return string length
+toArray // STRING > ARRAY
+MY_JOIN(); Array > String
+MASALC(); // to lowerCase
+MASAUP(); 
+
+// [22, 44 , 66]  [4, 8, 343543]
+// NADO DVA counberA counterB
+// LENGTH
+// ONE SORTED ARRAY []
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
